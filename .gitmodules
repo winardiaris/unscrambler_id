@@ -1,0 +1,9 @@
+[submodule "modules/kbbi"]
+	path = modules/kbbi
+	url = https://github.com/rizaumami/kbbi.git
+[submodule "modules/nolimit-kamus"]
+	path = modules/nolimit-kamus
+	url = https://github.com/nolimitid/nolimit-kamus.git
+[submodule "modules/kumpulan-kata-bahasa-indonesia-KBBI"]
+	path = modules/kumpulan-kata-bahasa-indonesia-KBBI
+	url = https://github.com/damzaky/kumpulan-kata-bahasa-indonesia-KBBI.git

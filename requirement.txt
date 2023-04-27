@@ -1,0 +1,5 @@
+kbbi
+requests
+beautifulsoup4
+appdirs
+six
