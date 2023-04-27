@@ -3,12 +3,13 @@ import os
 import sys
 from itertools import permutations
 from multiprocessing import Process
+from pathlib import Path
 from threading import Thread
 
 from kbbi import KBBI
 
 # CONFIG
-ROOT_DIR = "~/.unscrambler_id"
+ROOT_DIR = Path.home().joinpath('.unscrambler_id')
 
 # MODES
 NORMAL = 1
@@ -75,7 +76,6 @@ def search_word_in_files(root_dir, word):
                 with open(file_path, "r") as f:
                     for line in f:
                         if line.strip().lower().startswith(word):
-                            print(line.strip().lower())
                             found = True
                             res = extract_first_word(line.strip())
                             break
