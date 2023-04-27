@@ -17,6 +17,7 @@ if ! [ -x "$(command -v pip)" ]; then
 fi
 
 if [ -d "$UNSCRAMBLER_DIR" ]; then
+    cd "$UNSCRAMBLER_DIR" || exit
     git pull origin master
     git submodule -q foreach git pull -q origin master
 else
