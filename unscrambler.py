@@ -143,7 +143,7 @@ def main(argv):
         elif opt in ('-o', '--online'):
             FIND_ONLINE = True
         elif opt in ('-m', '--mode'):
-            PROCESS_MODE = arg
+            PROCESS_MODE = int(arg)
         elif opt in ('-v', '--verbose'):
             VERBOSE = True
         else:
