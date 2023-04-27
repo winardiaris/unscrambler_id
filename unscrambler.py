@@ -29,23 +29,16 @@ VERBOSE = False
 
 
 def find_combinations(scrambled_word, word_length, clues, find_online=False):
-    temp, result = set(), set()
-
     if not scrambled_word:
         print('Please type a word')
         sys.exit(2)
 
     if word_length == 0:
-        word_length = len(scrambled_word)
+        permutation_list = [pm for wl in range(3, len(scrambled_word) + 1) for pm in permutations(scrambled_word, wl)]
+    else:
+        permutation_list = list(permutations(scrambled_word, word_length))
 
-    permutation_list = list(permutations(scrambled_word, word_length))
-
-    for permutation in permutation_list:
-        temp.add(''.join(permutation))
-
-    for word in sorted(list(temp)):
-        if not clues or all(find_clue(word, f) for f in clues.split(",")):
-            result.add(''.join(word))
+    result = {word for word in sorted({''.join(permutation) for permutation in permutation_list}) if not clues or all(find_clue(word, f) for f in clues.split(","))}
 
     for word in sorted(result):
         found, _ = search_word_in_files(ROOT_DIR, word)
@@ -54,35 +47,29 @@ def find_combinations(scrambled_word, word_length, clues, find_online=False):
             try:
                 kbbi = KBBI(word)
             except:
-                result.remove(word)
+                result.discard(word)
         elif not found:
-            result.remove(word)
+            result.discard(word)
         else:
             print(word)
 
 
 def find_clue(word, clues):
-    split = clues.split(":")
-    letter_to = int(split[0])
-    clue = split[1]
-    return word[letter_to - 1] == clue
+    letter_to, clue = map(str, clues.split(":"))
+    if int(letter_to) <= len(word):
+        return word[int(letter_to) - 1] == clue
+    return False
 
 
 def search_word_in_files(root_dir, word):
-    found = False
-    res = None
     for subdir, _, files in os.walk(root_dir):
         for file in files:
             if file.endswith(".txt"):
-                file_path = os.path.join(subdir, file)
-                with open(file_path, "r") as f:
+                with open(os.path.join(subdir, file), "r") as f:
                     for line in f:
                         if line.strip().lower().startswith(word):
-                            found = True
-                            res = extract_first_word(line.strip())
-                            break
-
-    return found, res
+                            return True, extract_first_word(line.strip())
+    return False, None
 
 
 def extract_first_word(text):
