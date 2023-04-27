@@ -16,17 +16,20 @@ if ! [ -x "$(command -v pip)" ]; then
     exit 1
 fi
 
-git clone --recurse-submodules https://github.com/winardiaris/unscrambler_id.git "$UNSCRAMBLER_DIR"
-git config --global --add safe.directory "$UNSCRAMBLER_DIR"
-cd "$UNSCRAMBLER_DIR" || exit
+if [ -d "$UNSCRAMBLER_DIR" ]; then
+    git pull origin master
+    git submodule -q foreach git pull -q origin master
+else
+    git clone --recurse-submodules https://github.com/winardiaris/unscrambler_id.git "$UNSCRAMBLER_DIR"
+    git config --global --add safe.directory "$UNSCRAMBLER_DIR"
+    cd "$UNSCRAMBLER_DIR" || exit
+fi
 pip install -r requirement.txt
 
-if [ "$SHELL" == '/usr/bin/zsh' ]; then
-    echo "UNSCRAMBLER_DIR=$HOME/.unscrambler_id" >>~/.zshrc
-    echo "export PATH=\"\$UNSCRAMBLER_DIR:\$PATH\"" >>~/.zshrc
-elif [ "$SHELL" == '/bin/bash' ]; then
-    echo "UNSCRAMBLER_DIR=$HOME/.unscrambler_id" >>~/.bashrc
-    echo "export PATH=\"\$UNSCRAMBLER_DIR:\$PATH\"" >>~/.bashrc
+if [ "$SHELL" = '/usr/bin/zsh' ]; then
+    echo -e "# Unscramble ID\nUNSCRAMBLER_DIR=$HOME/.unscrambler_id\nexport PATH=\"\$UNSCRAMBLER_DIR:\$PATH\"" >>~/.zshrc
+elif [ "$SHELL" = '/bin/bash' ]; then
+    echo -e "# Unscramble ID\nUNSCRAMBLER_DIR=$HOME/.unscrambler_id\nexport PATH=\"\$UNSCRAMBLER_DIR:\$PATH\"" >>~/.bashrc
 else
     echo "Please add ${UNSCRAMBLER_DIR} to your PATH"
 fi
