@@ -8,7 +8,7 @@ from threading import Thread
 from kbbi import KBBI
 
 # CONFIG
-ROOT_DIR = "/opt/unscrambler_id"
+ROOT_DIR = "~/.unscrambler_id"
 
 # MODES
 NORMAL = 1
