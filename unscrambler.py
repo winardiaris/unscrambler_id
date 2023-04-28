@@ -26,11 +26,16 @@ CLUES = ""
 FIND_ONLINE = False
 PROCESS_MODE = MULTIPROCESSING
 VERBOSE = False
+OPTION = None
+
+
+HELP = 1
 
 
 def find_combinations(scrambled_word, word_length, clues, find_online=False):
     if not scrambled_word:
         print('Please type a word')
+        show_help()
         sys.exit(2)
 
     if word_length == 0:
@@ -81,7 +86,16 @@ def extract_first_word(text):
         return text[:first_space]
 
 
+def show_help():
+    f = open("{}/man/unscrambler_id.man".format(ROOT_DIR), 'r')
+    print(f.read())
+
+
 def unscrambler():
+    if OPTION == HELP:
+        show_help()
+        sys.exit(2)
+
     if VERBOSE:
         print('----------------------------------------------')
         print('Scrambled word \t: {}'.format(SCRAMBLED_WORD))
@@ -93,6 +107,7 @@ def unscrambler():
 
     if PROCESS_MODE not in MODES:
         print("Unrecognized mode: {}".format(PROCESS_MODE))
+        show_help()
         sys.exit(2)
 
     if PROCESS_MODE == NORMAL:
@@ -113,11 +128,13 @@ def main(argv):
     global FIND_ONLINE
     global PROCESS_MODE
     global VERBOSE
+    global OPTION
 
     try:
         opts, args = getopt.getopt(
-            argv, "w:l:c:om:v", ['word=', 'length=', 'clues=', 'online', 'mode=', 'verbose'])
+            argv, "w:l:c:om:vh", ['word=', 'length=', 'clues=', 'online', 'mode=', 'verbose', 'help'])
     except getopt.GetoptError:
+        show_help()
         sys.exit(2)
 
     for opt, arg in opts:
@@ -133,6 +150,8 @@ def main(argv):
             PROCESS_MODE = int(arg)
         elif opt in ('-v', '--verbose'):
             VERBOSE = True
+        elif opt in ('-h', '--help'):
+            OPTION = HELP
         else:
             return False, "Unrecognized option: " + opt
 
@@ -141,5 +160,6 @@ def main(argv):
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
+        show_help()
         sys.exit(2)
     main(sys.argv[1:])

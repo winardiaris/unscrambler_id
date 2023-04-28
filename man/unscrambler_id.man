@@ -1,0 +1,51 @@
+UNSCRAMBLER_ID(1)    USERMANUAL    UNSCRAMBLER_ID(1)
+
+NAME
+    unscrambler_id
+
+DESCRIPTION
+    Resolve unscramble word in Bahasa Indonesia
+
+SYNOPSIS
+    unscrambler_id [OPTION]
+
+OPTION
+    -w, --word
+        input scrambled word
+
+    -l, --length
+        searched word length
+
+    -c, --clues
+        available letter pointers
+
+    -o, --online
+        word search online
+
+    -m, --mode
+        word unscramble process mode
+
+    -v, --verbose
+        verbose
+
+EXAMPLE
+    unscrambler_id -w krstaab
+        show all available words based on random letters "krstaab"
+
+    unscrambler_id -w krstaab -l 5
+        show all words with length 5
+
+    unscrambler_id -w krstaab -c 2:a
+        show all word with second letter is "a"
+
+    unscrambler_id -w krstaab -c 2:a,5:t -l 5
+        show all word with second letter is "a", fifth letter is "t" and words with length 5
+
+    unscrambler_id -w krstaab -l 5 -o
+        show all words with length 5 and find online
+
+    unscrambler_id -w krstaab -l 5  -m {1|2|3}
+        show all words with length 5 with mode
+        1   Normal
+        2   Multi Threading
+        3   Multi Processing (default)
